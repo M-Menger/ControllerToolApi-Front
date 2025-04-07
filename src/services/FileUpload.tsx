@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import Card from '../components/Card';
 import { CardData } from '../interfaces/CardData';
+import './FileUpload.css'
 
 const FileUpload: React.FC = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -54,50 +55,56 @@ const FileUpload: React.FC = () => {
     }
   };
 
+  // Agrupar atendimentos por status
+  const atendimentosPorStatus = {
+    encerrada: atendimentos.filter(a => a.status.toLowerCase() === 'veículo pronto' || a.status.toLowerCase() === 'encerrada'),
+    em_andamento: atendimentos.filter(a => a.status.toLowerCase() === 'aprovada' || a.status.toLowerCase() === 'em elaboração de orcamento'),
+    pendente: atendimentos.filter(a => a.status.toLowerCase() === 'aberto'),
+  };
+
   return (
     <div className="container">
-      <h2>Upload de Arquivo Excel</h2>
+        
       <div className="upload-section">
+        <h2>Upload de Arquivo Excel</h2>
         <input type="file" accept=".xlsx" onChange={handleFileChange} />
         <button onClick={handleUpload} disabled={!selectedFile}>
           Enviar Arquivo
         </button>
+        {uploadStatus && <p className="status-message">{uploadStatus}</p>}
       </div>
-      
-      {uploadStatus && <p className="status-message">{uploadStatus}</p>}
-      
-      <div className="cards-container">
-        {atendimentos.map((atendimento, index) => (
-          <Card key={`${atendimento.placa}-${index}`} data={atendimento} />
-        ))}
+
+      <div className="columns-container">
+        {/* Coluna Encerrada */}
+        <div className="status-column">
+          <h3 className="column-title encerrada">Encerrada ({atendimentosPorStatus.encerrada.length})</h3>
+          <div className="cards-column">
+            {atendimentosPorStatus.encerrada.map((atendimento, index) => (
+              <Card key={`encerrada-${atendimento.placa}-${index}`} data={atendimento} />
+            ))}
+          </div>
+        </div>
+        
+        {/* Coluna Em Andamento */}
+        <div className="status-column">
+          <h3 className="column-title em_andamento">Em Andamento ({atendimentosPorStatus.em_andamento.length})</h3>
+          <div className="cards-column">
+            {atendimentosPorStatus.em_andamento.map((atendimento, index) => (
+              <Card key={`andamento-${atendimento.placa}-${index}`} data={atendimento} />
+            ))}
+          </div>
+        </div>
+        
+        {/* Coluna Pendente */}
+        <div className="status-column">
+          <h3 className="column-title pendente">Aberto ({atendimentosPorStatus.pendente.length})</h3>
+          <div className="cards-column">
+            {atendimentosPorStatus.pendente.map((atendimento, index) => (
+              <Card key={`pendente-${atendimento.placa}-${index}`} data={atendimento} />
+            ))}
+          </div>
+        </div>
       </div>
-      
-      <style jsx>{`
-        .container {
-          max-width: 800px;
-          margin: 0 auto;
-          padding: 20px;
-        }
-        
-        .upload-section {
-          display: flex;
-          gap: 10px;
-          margin-bottom: 20px;
-        }
-        
-        .status-message {
-          margin: 10px 0;
-          padding: 8px;
-          background-color: #f8f9fa;
-          border-radius: 4px;
-        }
-        
-        .cards-container {
-          display: flex;
-          flex-direction: column;
-          gap: 20px;
-        }
-      `}</style>
     </div>
   );
 };

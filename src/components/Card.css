@@ -1,0 +1,47 @@
+.card {
+    border-radius: 8px;
+    box-shadow:3px #856404;
+    padding: 16px;
+    margin: 16px 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    background-color: rgb(255, 255, 255);
+    color: black;
+    font-size: 12px;
+}
+
+
+.status-badge.encerrada {
+    color: #155724;
+}
+
+.status-badge.em_andamento {
+    color: #ffbf00;
+}
+
+.status-badge.pendente {
+    color: #721c24;
+}
+
+/* .card-row {
+    display: flex;
+    margin: 8px 0;
+} */
+
+/* .label {
+    font-weight: bold;
+    width: 120px;
+    color: #555;
+} */
+
+/* .value {
+    flex: 1;
+} */
+
+/* .link {
+    color: #0066cc;
+    text-decoration: none;
+} */
+
+.link:hover {
+    text-decoration: underline;
+}
