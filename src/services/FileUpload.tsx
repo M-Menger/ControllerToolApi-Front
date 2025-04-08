@@ -34,7 +34,7 @@ const FileUpload: React.FC = () => {
       setAtendimentos([]);
       
       const response = await axios.post<CardData[]>(
-        'http://localhost:8080/services/upload', 
+        'https://controllertoolapi.onrender.com/services/upload', 
         formData, 
         {
           headers: {
